@@ -1,0 +1,799 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Portfolio — Data & Analytics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0a0e17;
+    --bg-soft: #0f1422;
+    --panel: #131a2b;
+    --panel-hi: #1a2236;
+    --line: #232c42;
+    --text: #e7eaf2;
+    --text-dim: #8d96ad;
+    --text-faint: #5d667d;
+    --teal: #4fd1c5;
+    --teal-soft: rgba(79, 209, 197, 0.12);
+    --amber: #e8b864;
+    --amber-soft: rgba(232, 184, 100, 0.12);
+    --violet: #9d8cff;
+    --violet-soft: rgba(157, 140, 255, 0.12);
+    --radius: 14px;
+    --ease: cubic-bezier(.16,.84,.44,1);
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;}
+  }
+
+  body{
+    background:
+      radial-gradient(900px 500px at 85% -10%, rgba(157,140,255,0.10), transparent 60%),
+      radial-gradient(700px 400px at -5% 20%, rgba(79,209,197,0.08), transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    line-height:1.5;
+    min-height:100vh;
+  }
+
+  .mono{font-family:'JetBrains Mono', monospace; letter-spacing:0.02em;}
+  .display{font-family:'Fraunces', serif;}
+
+  a{color:inherit; text-decoration:none;}
+
+  /* ---------- Layout shell ---------- */
+  .shell{
+    display:grid;
+    grid-template-columns: 240px 1fr;
+    min-height:100vh;
+  }
+
+  /* ---------- Sidebar ---------- */
+  .sidebar{
+    border-right:1px solid var(--line);
+    padding:32px 24px;
+    position:sticky;
+    top:0;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    gap:40px;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .brand-mark{
+    width:34px; height:34px;
+    border-radius:9px;
+    background:linear-gradient(135deg, var(--teal), var(--violet));
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size:16px;
+    color:#0a0e17;
+    flex-shrink:0;
+  }
+  .brand-name{font-size:14.5px; font-weight:600; line-height:1.25;}
+  .brand-role{font-size:11.5px; color:var(--text-dim); margin-top:1px;}
+
+  nav.primary{display:flex; flex-direction:column; gap:2px;}
+  nav.primary a{
+    font-size:13.5px;
+    color:var(--text-dim);
+    padding:9px 12px;
+    border-radius:8px;
+    transition: background .18s var(--ease), color .18s var(--ease);
+    display:flex; align-items:center; gap:10px;
+  }
+  nav.primary a:hover, nav.primary a.active{
+    color:var(--text);
+    background:var(--panel-hi);
+  }
+  nav.primary .dot{
+    width:5px; height:5px; border-radius:50%;
+    background:var(--text-faint);
+    flex-shrink:0;
+  }
+  nav.primary a.active .dot{background:var(--teal); box-shadow:0 0 8px var(--teal);}
+
+  .sidebar-foot{margin-top:auto; display:flex; flex-direction:column; gap:14px;}
+  .status-pill{
+    display:inline-flex; align-items:center; gap:7px;
+    font-size:11.5px; color:var(--text-dim);
+    padding:7px 11px;
+    border:1px solid var(--line);
+    border-radius:999px;
+    width:fit-content;
+  }
+  .status-pill .pulse{
+    width:6px; height:6px; border-radius:50%;
+    background:var(--teal);
+    box-shadow:0 0 0 0 rgba(79,209,197,.6);
+    animation:pulse 2.4s infinite;
+  }
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(79,209,197,.5);}
+    70%{box-shadow:0 0 0 7px rgba(79,209,197,0);}
+    100%{box-shadow:0 0 0 0 rgba(79,209,197,0);}
+  }
+  .sidebar-links{display:flex; gap:14px;}
+  .sidebar-links a{font-size:12px; color:var(--text-faint); transition:color .15s;}
+  .sidebar-links a:hover{color:var(--teal);}
+
+  /* ---------- Main ---------- */
+  main{padding:48px 56px 80px; max-width:1180px;}
+  section{margin-bottom:88px;}
+  section:last-child{margin-bottom:40px;}
+
+  .eyebrow{
+    font-size:11px; text-transform:uppercase; letter-spacing:0.12em;
+    color:var(--text-faint);
+    margin-bottom:10px;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    display:grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap:48px;
+    align-items:start;
+    padding-top:8px;
+  }
+  .hero h1{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:clamp(34px, 4vw, 50px);
+    line-height:1.08;
+    letter-spacing:-0.01em;
+  }
+  .hero h1 .accent{color:var(--teal); font-style:italic; font-weight:500;}
+  .hero p.lede{
+    margin-top:20px;
+    font-size:16px;
+    color:var(--text-dim);
+    max-width:46ch;
+    line-height:1.65;
+  }
+  .hero-cta{display:flex; gap:12px; margin-top:28px;}
+  .btn{
+    font-size:13px; font-weight:600;
+    padding:11px 20px;
+    border-radius:9px;
+    cursor:pointer;
+    border:1px solid transparent;
+    transition:transform .18s var(--ease), border-color .18s, background .18s;
+  }
+  .btn-primary{
+    background:var(--text);
+    color:var(--bg);
+  }
+  .btn-primary:hover{transform:translateY(-1px);}
+  .btn-ghost{
+    border-color:var(--line);
+    color:var(--text-dim);
+  }
+  .btn-ghost:hover{border-color:var(--teal); color:var(--text);}
+
+  /* trace visual */
+  .trace-card{
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    background:var(--panel);
+    padding:22px 22px 18px;
+    position:relative;
+    overflow:hidden;
+  }
+  .trace-card .trace-label{
+    font-size:11px; color:var(--text-faint);
+    display:flex; justify-content:space-between;
+    margin-bottom:14px;
+  }
+  .trace-card svg{display:block; width:100%; height:auto;}
+  .trace-path{
+    fill:none; stroke:var(--teal); stroke-width:2;
+    stroke-dasharray:600; stroke-dashoffset:600;
+    animation:draw 2.2s var(--ease) forwards .3s;
+  }
+  .trace-fill{opacity:0; animation:fadein 1s ease forwards 1.6s;}
+  @keyframes draw{to{stroke-dashoffset:0;}}
+  @keyframes fadein{to{opacity:1;}}
+  .trace-dot{
+    fill:var(--teal);
+    opacity:0;
+    animation:fadein .4s ease forwards 2.4s;
+  }
+  .trace-readout{
+    display:flex; justify-content:space-between;
+    margin-top:14px; padding-top:14px;
+    border-top:1px solid var(--line);
+  }
+  .trace-readout div span{display:block;}
+  .trace-readout .val{font-family:'JetBrains Mono', monospace; font-size:18px; font-weight:600;}
+  .trace-readout .lbl{font-size:10.5px; color:var(--text-faint); margin-top:3px; text-transform:uppercase; letter-spacing:.06em;}
+
+  /* ---------- Stat strip ---------- */
+  .stat-strip{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    overflow:hidden;
+  }
+  .stat{
+    padding:24px 22px;
+    border-right:1px solid var(--line);
+    background:var(--panel);
+  }
+  .stat:last-child{border-right:none;}
+  .stat .num{
+    font-family:'Fraunces', serif;
+    font-size:30px;
+    font-weight:600;
+    color:var(--text);
+  }
+  .stat .num .unit{font-size:16px; color:var(--text-dim); font-family:'Inter';}
+  .stat .lbl{font-size:12px; color:var(--text-dim); margin-top:6px;}
+
+  /* ---------- Section heads ---------- */
+  .section-head{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    margin-bottom:28px;
+    gap:24px;
+  }
+  .section-head h2{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:26px;
+  }
+  .section-head p{color:var(--text-dim); font-size:13.5px; margin-top:6px; max-width:50ch;}
+
+  /* ---------- Filters ---------- */
+  .filters{display:flex; gap:8px; flex-wrap:wrap;}
+  .filter-btn{
+    font-size:12.5px;
+    padding:8px 14px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    color:var(--text-dim);
+    background:transparent;
+    cursor:pointer;
+    transition:all .18s var(--ease);
+    white-space:nowrap;
+  }
+  .filter-btn:hover{border-color:var(--text-faint); color:var(--text);}
+  .filter-btn.active{
+    background:var(--text);
+    color:var(--bg);
+    border-color:var(--text);
+  }
+
+  /* ---------- Project grid ---------- */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:18px;
+  }
+  .card{
+    border:1px solid var(--line);
+    background:var(--panel);
+    border-radius:var(--radius);
+    padding:24px;
+    cursor:pointer;
+    transition:border-color .2s var(--ease), transform .2s var(--ease), background .2s var(--ease);
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+  .card:hover{
+    border-color:var(--teal);
+    background:var(--panel-hi);
+    transform:translateY(-2px);
+  }
+  .card-top{display:flex; justify-content:space-between; align-items:flex-start; gap:12px;}
+  .card-tag{
+    font-size:10.5px; text-transform:uppercase; letter-spacing:.07em;
+    padding:5px 9px; border-radius:6px;
+    font-weight:600;
+  }
+  .tag-eng{background:var(--teal-soft); color:var(--teal);}
+  .tag-bi{background:var(--violet-soft); color:var(--violet);}
+  .tag-ml{background:var(--amber-soft); color:var(--amber);}
+  .tag-gov{background:rgba(231,234,242,0.08); color:var(--text-dim);}
+
+  .card-arrow{color:var(--text-faint); font-size:16px; transition:transform .2s var(--ease), color .2s;}
+  .card:hover .card-arrow{transform:translate(2px,-2px); color:var(--teal);}
+
+  .card h3{font-family:'Fraunces', serif; font-size:19px; font-weight:600; line-height:1.3;}
+  .card .desc{font-size:13px; color:var(--text-dim); line-height:1.55;}
+
+  .card-metric{
+    display:flex; align-items:baseline; gap:8px;
+    padding-top:14px; border-top:1px solid var(--line);
+  }
+  .card-metric .mval{font-family:'JetBrains Mono', monospace; font-size:20px; font-weight:600; color:var(--teal);}
+  .card-metric .mlbl{font-size:11.5px; color:var(--text-faint);}
+
+  .card-stack{display:flex; gap:6px; flex-wrap:wrap; margin-top:-4px;}
+  .chip{
+    font-size:10.5px; color:var(--text-faint);
+    padding:3px 8px; border:1px solid var(--line); border-radius:5px;
+  }
+
+  /* ---------- Skills section ---------- */
+  .skills-wrap{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:14px;
+  }
+  .skill-block{
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:20px;
+    background:var(--panel);
+  }
+  .skill-block h4{
+    font-size:12px; text-transform:uppercase; letter-spacing:.06em;
+    color:var(--text-faint); margin-bottom:14px;
+  }
+  .skill-row{margin-bottom:12px;}
+  .skill-row:last-child{margin-bottom:0;}
+  .skill-row .skill-top{display:flex; justify-content:space-between; font-size:12.5px; margin-bottom:6px;}
+  .skill-row .skill-top span:last-child{color:var(--text-faint); font-family:'JetBrains Mono', monospace; font-size:11px;}
+  .bar-track{height:4px; background:var(--line); border-radius:2px; overflow:hidden;}
+  .bar-fill{height:100%; background:linear-gradient(90deg, var(--teal), var(--violet)); border-radius:2px; width:0; transition:width 1.1s var(--ease);}
+
+  /* ---------- Timeline ---------- */
+  .timeline{display:flex; flex-direction:column;}
+  .tl-item{
+    display:grid;
+    grid-template-columns:120px 1fr;
+    gap:24px;
+    padding:22px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .tl-item:last-child{border-bottom:none;}
+  .tl-when{font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--text-faint); padding-top:2px;}
+  .tl-body h4{font-size:15px; font-weight:600; margin-bottom:4px;}
+  .tl-body .org{font-size:12.5px; color:var(--teal); margin-bottom:8px;}
+  .tl-body p{font-size:13px; color:var(--text-dim); max-width:65ch; line-height:1.6;}
+
+  /* ---------- Footer / contact ---------- */
+  .contact-card{
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:40px;
+    background:linear-gradient(135deg, var(--panel), var(--panel-hi));
+    display:flex; justify-content:space-between; align-items:center; gap:24px;
+    flex-wrap:wrap;
+  }
+  .contact-card h2{font-family:'Fraunces', serif; font-size:24px; font-weight:600;}
+  .contact-card p{color:var(--text-dim); font-size:13.5px; margin-top:6px;}
+  .contact-actions{display:flex; gap:10px;}
+
+  footer{
+    margin-top:60px;
+    padding-top:24px;
+    border-top:1px solid var(--line);
+    display:flex; justify-content:space-between;
+    font-size:11.5px; color:var(--text-faint);
+  }
+
+  /* ---------- Modal ---------- */
+  .overlay{
+    position:fixed; inset:0;
+    background:rgba(5,7,12,0.75);
+    backdrop-filter:blur(4px);
+    display:none;
+    align-items:flex-start;
+    justify-content:center;
+    padding:60px 24px;
+    overflow-y:auto;
+    z-index:50;
+  }
+  .overlay.open{display:flex;}
+  .modal{
+    background:var(--bg-soft);
+    border:1px solid var(--line);
+    border-radius:18px;
+    max-width:640px;
+    width:100%;
+    padding:36px;
+    animation:modalIn .3s var(--ease);
+  }
+  @keyframes modalIn{from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:translateY(0);}}
+  .modal-top{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:18px;}
+  .modal-close{
+    width:30px; height:30px; border-radius:8px;
+    border:1px solid var(--line); background:transparent; color:var(--text-dim);
+    cursor:pointer; font-size:14px;
+    transition:all .15s;
+  }
+  .modal-close:hover{color:var(--text); border-color:var(--text-faint);}
+  .modal h3{font-family:'Fraunces', serif; font-size:24px; margin-bottom:6px;}
+  .modal .modal-tag{margin-bottom:14px;}
+  .modal-body p{color:var(--text-dim); font-size:14px; line-height:1.7; margin-bottom:16px;}
+  .modal-metrics{display:flex; gap:24px; margin:20px 0; padding:18px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .modal-metrics div .mval{font-family:'JetBrains Mono', monospace; font-size:22px; font-weight:600; color:var(--teal); display:block;}
+  .modal-metrics div .mlbl{font-size:11px; color:var(--text-faint); margin-top:2px;}
+  .modal-stack{display:flex; gap:6px; flex-wrap:wrap;}
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:980px){
+    .shell{grid-template-columns:1fr;}
+    .sidebar{position:relative; height:auto; flex-direction:row; align-items:center; padding:18px 24px; gap:0; justify-content:space-between;}
+    nav.primary{display:none;}
+    .sidebar-foot{margin-top:0;}
+    main{padding:32px 24px 60px;}
+    .hero{grid-template-columns:1fr;}
+    .stat-strip{grid-template-columns:repeat(2,1fr);}
+    .stat:nth-child(2){border-right:none;}
+    .stat{border-bottom:1px solid var(--line);}
+    .grid{grid-template-columns:1fr;}
+    .skills-wrap{grid-template-columns:repeat(2,1fr);}
+    .tl-item{grid-template-columns:1fr; gap:6px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">CX</div>
+      <div>
+        <div class="brand-name">CELXXXXX XXXXXX</div>
+        <div class="brand-role">Data Scientist</div>
+      </div>
+    </div>
+
+    <nav class="primary">
+      <a href="#overview" class="active"><span class="dot"></span>Overview</a>
+      <a href="#work"><span class="dot"></span>Experience</a>
+      <a href="#capabilities"><span class="dot"></span>Capabilities</a>
+      <a href="#trajectory"><span class="dot"></span>Trajectory</a>
+      <a href="#contact"><span class="dot"></span>Contact</a>
+    </nav>
+
+    <div class="sidebar-foot">
+      <span class="status-pill"><span class="pulse"></span>Ottawa, Canada</span>
+      <div class="sidebar-links">
+        <a href="mailto:XXXXXX@gmail.com">Email</a>
+        <a href="#">GitHub</a>
+      </div>
+    </div>
+  </aside>
+
+  <main>
+
+    <section id="overview" class="hero">
+      <div>
+        <div class="eyebrow">Portfolio — Selected work</div>
+        <h1>I turn data into<br><span class="accent">decisions</span> across fintech &amp; energy.</h1>
+        <p class="lede">Data Scientist with an MS in Information Technology (Applied Machine Learning) from Carnegie Mellon University. Predictive modeling, geospatial analysis, and business intelligence across fintech, energy access, and technology — translating complex data into insight for technical and executive audiences alike.</p>
+        <div class="hero-cta">
+          <a href="#work" class="btn btn-primary">View experience</a>
+          <a href="#contact" class="btn btn-ghost">Get in touch</a>
+        </div>
+      </div>
+
+      <div class="trace-card">
+        <div class="trace-label">
+          <span>DIGITAL BANKING ENGAGEMENT</span>
+          <span class="mono">LIVE TRACE</span>
+        </div>
+        <svg viewBox="0 0 280 110" preserveAspectRatio="none">
+          <polygon class="trace-fill" points="0,110 0,76 35,68 70,82 105,52 140,60 175,30 210,40 245,18 280,26 280,110" fill="url(#g)"/>
+          <defs>
+            <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#4fd1c5" stop-opacity="0.22"/>
+              <stop offset="100%" stop-color="#4fd1c5" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <path class="trace-path" d="M0,76 35,68 70,82 105,52 140,60 175,30 210,40 245,18 280,26"/>
+          <circle class="trace-dot" cx="280" cy="26" r="3.5"/>
+        </svg>
+        <div class="trace-readout">
+          <div><span class="val">70%</span><span class="lbl">Engagement tracking lift</span></div>
+          <div><span class="val">8+</span><span class="lbl">Power BI dashboards</span></div>
+          <div><span class="val">$2M+</span><span class="lbl">Funding decisions supported</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="stat-strip">
+        <div class="stat">
+          <div class="num">20<span class="unit">+</span></div>
+          <div class="lbl">Renewable energy feasibility studies across Africa</div>
+        </div>
+        <div class="stat">
+          <div class="num">150<span class="unit">+</span></div>
+          <div class="lbl">Repair centers tracked in BBOXX reliability dashboards</div>
+        </div>
+        <div class="stat">
+          <div class="num">35<span class="unit">%</span></div>
+          <div class="lbl">Improvement in stakeholder investment decisions</div>
+        </div>
+        <div class="stat">
+          <div class="num">4</div>
+          <div class="lbl">Countries — Rwanda, Germany, South Africa, USA</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="work">
+      <div class="section-head">
+        <div>
+          <h2>Experience</h2>
+          <p>Roles spanning fintech, renewable energy access, and emerging tech — predictive modeling, geospatial analysis, and BI delivered for production use.</p>
+        </div>
+      </div>
+
+      <div class="filters" id="filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="bi">Banking &amp; BI</button>
+        <button class="filter-btn" data-filter="geo">Geospatial</button>
+        <button class="filter-btn" data-filter="ml">Predictive Modeling</button>
+      </div>
+
+      <div class="grid" id="grid"></div>
+    </section>
+
+    <section id="capabilities">
+      <div class="section-head">
+        <div>
+          <h2>Capabilities</h2>
+          <p>Tools and disciplines used day to day, grouped by where they sit in the data lifecycle.</p>
+        </div>
+      </div>
+      <div class="skills-wrap" id="skills"></div>
+    </section>
+
+    <section id="trajectory">
+      <div class="section-head">
+        <div>
+          <h2>Trajectory</h2>
+          <p>From early childhood ed-tech to energy analytics to enterprise banking BI.</p>
+        </div>
+      </div>
+      <div class="timeline" id="timeline"></div>
+    </section>
+
+    <section id="contact">
+      <div class="contact-card">
+        <div>
+          <h2>Let's talk data.</h2>
+          <p>Based in Ottawa, Canada — open to Data Science, BI, and Geospatial Analytics roles.</p>
+        </div>
+        <div class="contact-actions">
+          <a href="mailto:XXXXXX@gmail.com" class="btn btn-primary">Email me</a>
+          <a href="#" class="btn btn-ghost">Download CV</a>
+        </div>
+      </div>
+
+      <footer>
+        <span>© 2026 CELXXXXX XXXXXX — Data Scientist</span>
+        <span class="mono">Ottawa, Canada · English (Fluent) · French (Proficient)</span>
+      </footer>
+    </section>
+
+  </main>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal" id="modal"></div>
+</div>
+
+<script>
+const PROJECTS = [
+  {
+    id:1, cat:"bi", tag:"Banking & BI", tagClass:"tag-bi",
+    title:"Digital Banking Analytics Dashboard",
+    desc:"Automated digital banking analytics dashboard improving customer engagement tracking efficiency by 70%, built for the digital and finance teams at I&M Bank Rwanda.",
+    metricVal:"70%", metricLbl:"efficiency lift",
+    stack:["Power BI","SQL","Digital Banking"],
+    full:"Designed and deployed an automated digital banking analytics dashboard at I&M Bank Rwanda, improving customer engagement tracking efficiency by 70%. Collaborated closely with digital and finance teams to ensure data quality and consistency across all reporting systems feeding the dashboard.",
+    metrics:[["70%","Efficiency improvement"],["I&M Bank","Rwanda"],["2025","Deployed"]]
+  },
+  {
+    id:2, cat:"bi", tag:"Banking & BI", tagClass:"tag-bi",
+    title:"Real-Time Banking Performance Dashboards",
+    desc:"8+ Power BI dashboards delivering real-time insight on banking performance, customer acquisition, and transaction trends.",
+    metricVal:"8+", metricLbl:"dashboards shipped",
+    stack:["Power BI","Real-time reporting"],
+    full:"Developed 8+ Power BI dashboards providing real-time insights on banking performance, customer acquisition, and transaction trends — giving stakeholders a consistent, up-to-date view across the business.",
+    metrics:[["8+","Dashboards"],["Real-time","Refresh cadence"],["I&M Bank","Rwanda"]]
+  },
+  {
+    id:3, cat:"ml", tag:"Predictive Modeling", tagClass:"tag-ml",
+    title:"Cross-Sell & Transaction Behavior Models",
+    desc:"Predictive models for customer cross-sell and transaction behavior analysis, enabling targeted marketing campaigns at I&M Bank Rwanda.",
+    metricVal:"ML", metricLbl:"targeted campaigns",
+    stack:["Python","SQL","Predictive modeling"],
+    full:"Built and implemented predictive models analyzing customer cross-sell potential and transaction behavior, directly enabling more targeted marketing campaigns for the bank's customer base.",
+    metrics:[["Cross-sell","Model focus"],["Behavioral","Data signal"],["Targeted","Campaign output"]]
+  },
+  {
+    id:9, cat:"bi", tag:"Banking & BI", tagClass:"tag-bi",
+    title:"Outflow Transfers Analysis",
+    desc:"Self-initiated analytics project — conceived the business case, then wrote the Oracle SQL queries and built the Power BI dashboard to track outbound transfer patterns and digital migration opportunities.",
+    metricVal:"Self-led", metricLbl:"query + dashboard build",
+    stack:["Oracle SQL","Power BI","Self-initiated"],
+    full:"Originated this analytics project independently, identifying the business opportunity in tracking outbound transfer patterns. Wrote the Oracle SQL queries and built the accompanying Power BI dashboard end-to-end, covering branch-level transfer volumes, transfer-to-OTC ratios, and digital adoption indicators to surface where customers are moving money out and where digital migration opportunities exist.",
+    metrics:[["Self-led","Project origin"],["End-to-end","Query + dashboard"],["Analytics","Workstream"]]
+  },
+  {
+    id:4, cat:"geo", tag:"Geospatial", tagClass:"tag-eng",
+    title:"Renewable Energy Feasibility Studies",
+    desc:"Geospatial feasibility studies for 20+ renewable energy projects across Africa, with energy access metrics structured using ONSSET and MLED frameworks.",
+    metricVal:"20+", metricLbl:"projects assessed",
+    stack:["QGIS","ONSSET","MLED","Spatial statistics"],
+    full:"As Geospatial Data Scientist at VIDA, analyzed geospatial data and conducted feasibility studies for 20+ renewable energy projects across Africa. Structured and validated energy access inclusivity metrics using ONSSET and MLED frameworks for development organizations, and applied multi-criteria decision-making and statistical methods to rank project indicators.",
+    metrics:[["20+","Projects assessed"],["35%","Better investment decisions"],["VIDA","Munich, Germany"]]
+  },
+  {
+    id:5, cat:"geo", tag:"Geospatial", tagClass:"tag-eng",
+    title:"Energy Access Scenario Visualization",
+    desc:"Interactive energy access scenario visualizations for stakeholder presentations, supporting $2M+ in project funding decisions.",
+    metricVal:"$2M+", metricLbl:"funding supported",
+    stack:["QGIS","Data visualization","Stakeholder presentations"],
+    full:"Created interactive energy access scenario visualizations used directly in stakeholder presentations, supporting over $2M in project funding decisions. Also trained cross-functional teams on geospatial analysis tools and methodology, including QGIS and spatial statistics.",
+    metrics:[["$2M+","Funding supported"],["Cross-functional","Teams trained"],["VIDA","Munich, Germany"]]
+  },
+  {
+    id:6, cat:"ml", tag:"Predictive Modeling", tagClass:"tag-ml",
+    title:"Repair Center Reliability Models",
+    desc:"Predictive models on repair center failure rates, with dashboards tracking 150+ centers to surface product reliability issues.",
+    metricVal:"150+", metricLbl:"repair centers tracked",
+    stack:["Python","Dashboards","Reliability analysis"],
+    full:"At BBOXX-Africa, analyzed repair center failure rates using Python, creating predictive models that identified critical product reliability issues. Developed interactive dashboards tracking 150+ repair centers, enabling management to identify failure patterns and trends, and recommended a product procurement and phase-out strategy that reduced operational costs by 20%.",
+    metrics:[["150+","Repair centers"],["20%","Cost reduction"],["BBOXX","Africa"]]
+  },
+  {
+    id:7, cat:"ml", tag:"Predictive Modeling", tagClass:"tag-ml",
+    title:"Mini-Grid Developer Segmentation",
+    desc:"Regression modeling to identify and segment mini-grid developer opportunities, predicting 5–10 year revenue streams.",
+    metricVal:"90%", metricLbl:"sharper segmentation focus",
+    stack:["Regression modeling","Segmentation"],
+    full:"As Machine Learning Intern at TFE, identified and segmented mini-grid developer opportunities, predicting 5–10 year revenue streams using regression modeling. Improved customer exploration focus by 90% through better segmentation analysis, and developed machine learning models to assess refinancing eligibility and project profitability.",
+    metrics:[["90%","Focus improvement"],["5-10yr","Revenue horizon modeled"],["TFE","Cape Town"]]
+  }
+];
+
+const SKILLS = [
+  { group:"Languages & Tools", items:[["Python",90],["SQL / BigQuery",88],["GitHub",80]] },
+  { group:"BI & Visualization", items:[["Power BI",90],["Data Visualization",85],["Business Intelligence",85]] },
+  { group:"Modeling & Analysis", items:[["Predictive Modeling",88],["Machine Learning",85],["Statistical Analysis",82]] },
+  { group:"Geospatial", items:[["QGIS",85],["Geospatial Analysis",85],["Spatial Statistics",78]] }
+];
+
+const TIMELINE = [
+  { when:"Apr 2025 — Now", title:"Data Scientist", org:"I&M Bank Rwanda · Kigali, Rwanda", desc:"Designed automated digital banking analytics dashboards, built predictive models for cross-sell and transaction behavior, and delivered 8+ Power BI dashboards for real-time banking insight." },
+  { when:"Aug 2022 — Apr 2025", title:"Geospatial Data Scientist", org:"VIDA · Munich, Germany", desc:"Conducted feasibility studies for 20+ renewable energy projects across Africa using ONSSET and MLED frameworks, supporting $2M+ in funding decisions and training teams on QGIS and spatial statistics." },
+  { when:"May — Aug 2022", title:"Data Analyst", org:"BBOXX-Africa · Kigali, Rwanda", desc:"Analyzed repair center failure rates with Python, built dashboards tracking 150+ repair centers, and recommended procurement strategy that reduced operational costs by 20%." },
+  { when:"Sep 2021 — May 2022", title:"Machine Learning Intern", org:"TFE · Cape Town, South Africa", desc:"Segmented mini-grid developer opportunities with regression modeling, improving customer exploration focus by 90%, and built models assessing refinancing eligibility." },
+  { when:"May 2022", title:"MS, Information Technology (Applied Machine Learning)", org:"Carnegie Mellon University · Pittsburgh, USA", desc:"Graduate study in applied machine learning, the technical foundation for the predictive modeling and BI work that followed." },
+  { when:"Aug 2017", title:"BS, Computer Science", org:"University of Rwanda · Kigali, Rwanda", desc:"Undergraduate degree in Computer Science." }
+];
+
+function renderGrid(filter){
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  PROJECTS.filter(p => filter === 'all' || p.cat === filter).forEach(p=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="card-top">
+        <span class="card-tag ${p.tagClass}">${p.tag}</span>
+        <span class="card-arrow">↗</span>
+      </div>
+      <h3>${p.title}</h3>
+      <p class="desc">${p.desc}</p>
+      <div class="card-stack">${p.stack.map(s=>`<span class="chip">${s}</span>`).join('')}</div>
+      <div class="card-metric"><span class="mval">${p.metricVal}</span><span class="mlbl">${p.metricLbl}</span></div>
+    `;
+    card.addEventListener('click', ()=>openModal(p));
+    grid.appendChild(card);
+  });
+}
+
+function renderSkills(){
+  const wrap = document.getElementById('skills');
+  wrap.innerHTML = '';
+  SKILLS.forEach(s=>{
+    const block = document.createElement('div');
+    block.className = 'skill-block';
+    block.innerHTML = `<h4>${s.group}</h4>` + s.items.map(([name,val])=>`
+      <div class="skill-row">
+        <div class="skill-top"><span>${name}</span><span>${val}%</span></div>
+        <div class="bar-track"><div class="bar-fill" data-val="${val}"></div></div>
+      </div>
+    `).join('');
+    wrap.appendChild(block);
+  });
+  requestAnimationFrame(()=>{
+    setTimeout(()=>{
+      document.querySelectorAll('.bar-fill').forEach(b=>{
+        b.style.width = b.dataset.val + '%';
+      });
+    }, 150);
+  });
+}
+
+function renderTimeline(){
+  const tl = document.getElementById('timeline');
+  tl.innerHTML = TIMELINE.map(t=>`
+    <div class="tl-item">
+      <div class="tl-when">${t.when}</div>
+      <div class="tl-body">
+        <h4>${t.title}</h4>
+        <div class="org">${t.org}</div>
+        <p>${t.desc}</p>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openModal(p){
+  const modal = document.getElementById('modal');
+  modal.innerHTML = `
+    <div class="modal-top">
+      <div>
+        <span class="card-tag ${p.tagClass} modal-tag">${p.tag}</span>
+        <h3>${p.title}</h3>
+      </div>
+      <button class="modal-close" id="closeBtn">✕</button>
+    </div>
+    <div class="modal-body">
+      <p>${p.full}</p>
+      <div class="modal-metrics">
+        ${p.metrics.map(([v,l])=>`<div><span class="mval">${v}</span><span class="mlbl">${l}</span></div>`).join('')}
+      </div>
+      <div class="modal-stack">${p.stack.map(s=>`<span class="chip">${s}</span>`).join('')}</div>
+    </div>
+  `;
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('closeBtn').addEventListener('click', closeModal);
+}
+function closeModal(){ document.getElementById('overlay').classList.remove('open'); }
+document.getElementById('overlay').addEventListener('click', e=>{
+  if(e.target.id === 'overlay') closeModal();
+});
+document.addEventListener('keydown', e=>{ if(e.key === 'Escape') closeModal(); });
+
+document.getElementById('filters').addEventListener('click', e=>{
+  const btn = e.target.closest('.filter-btn');
+  if(!btn) return;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderGrid(btn.dataset.filter);
+});
+
+// nav active state on scroll
+const navLinks = document.querySelectorAll('nav.primary a');
+const sections = [...navLinks].map(l => document.querySelector(l.getAttribute('href')));
+window.addEventListener('scroll', ()=>{
+  let idx = 0;
+  sections.forEach((s,i)=>{ if(s && window.scrollY >= s.offsetTop - 140) idx = i; });
+  navLinks.forEach(l=>l.classList.remove('active'));
+  navLinks[idx].classList.add('active');
+});
+
+renderGrid('all');
+renderSkills();
+renderTimeline();
+</script>
+
+</body>
+</html>
